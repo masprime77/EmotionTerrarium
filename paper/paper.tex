@@ -1,0 +1,59 @@
+\documentclass[a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lipsum} % for dummy text
+\usepackage{graphicx} % for images
+\usepackage{titlesec}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage[justification=centering]{caption}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=blue
+}
+\usepackage[backend=biber, style=apa]{biblatex}
+\addbibresource{bibliography.bib}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+
+\title{Emotion Terrarium}
+\author{Mateo Arenas \and Martin Doering \and Disune Olavide}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\begin{abstract}
+    \lipsum[1-4] % Replace with your ~500 words abstract
+\end{abstract}
+
+\section{Problem Statement}
+    \lipsum[5] % Replace with your content
+
+\section{Solution}
+    \lipsum[6] % Replace with your content
+
+\section{Approach}
+    \lipsum[7-8] % Replace with your content
+
+\section{Figures}
+
+\section*{References}
+    \printbibliography
+
+\end{document}

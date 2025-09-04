@@ -1,0 +1,19 @@
+/emotional_terrarium/
+│
+├─ config.py
+├─ main.py
+├─ controller.py
+│
+├─ drivers/
+│  ├─ sensor_dht.py
+│  ├─ led_builtin.py
+│  └─ neopixel_ring.py
+│
+└─ services/
+   ├─ emotion.py
+   └─ weather.py
+
+config.py       -> Define parameters and pins.
+drivers         -> Drivers for each one of the sensors.
+services        -> Updates the 'things' according to the mapping.
+controller.py   -> Reads periodically the sensors and calls for services.

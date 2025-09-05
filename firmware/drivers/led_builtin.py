@@ -1,8 +1,10 @@
 import machine
+from drivers.LED import LED
+from drivers.BLINK import Blink
 
-class LEDBuiltin:
-    def __init__(self):
-        self._led = machine.Pin("LED", machine.Pin.OUT)
+class LEDBuiltin(LED, Blink):
+    def __init__(self, pin="LED"):
+        self._led = machine.Pin(pin, machine.Pin.OUT)
         self.off()
 
     def on(self):
@@ -12,4 +14,4 @@ class LEDBuiltin:
         self._led.value(0)
 
     def toggle(self):
-        self._led.toggle()
+        self._led.value(not self._led.value())

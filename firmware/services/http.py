@@ -1,7 +1,7 @@
 try:
     import urequests as requests
 except ImportError:
-    raise ImportError("This module requires the 'urequests' library")
+    import requests
 
 def http_get_json(url, timeout=10):
     r = None

@@ -8,7 +8,7 @@ PIN_DHT = 16
 sensor = dht.DHT22(machine.Pin(PIN_DHT))
 
 # ==== Configuración del anillo LED (WS2812/NeoPixel) ====
-PIN_LED = 17        # GPIO donde está conectado el anillo
+PIN_LED = 18        # GPIO donde está conectado el anillo
 NUM_LEDS = 7       # Número de LEDs en tu anillo
 np = neopixel.NeoPixel(machine.Pin(PIN_LED), NUM_LEDS)
 

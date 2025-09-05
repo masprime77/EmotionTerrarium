@@ -20,8 +20,6 @@ Each story includes **acceptance criteria** that define when the story is consid
 - When I choose a valid city (e.g., Darmstadt)
 - Then the terrarium updates to show the current weather.
 
----
-
 ### Story 2 – Display weather conditions
 
 **As a** user
@@ -36,8 +34,6 @@ Each story includes **acceptance criteria** that define when the story is consid
 - Given the weather is “Rain”
 - Then the LEDs display a blue pulsing pattern.
 - Additional acceptance criteria will be defined for other conditions such as snow, fog, and drizzle.
-
----
 
 ### Story 3 – Set my emotional state
 
@@ -55,8 +51,6 @@ Each story includes **acceptance criteria** that define when the story is consid
 - When I select “angry”
 - Then the sphere glows red.
 
----
-
 ### Story 4 – Combine weather and emotion
 
 **As a** user
@@ -69,8 +63,6 @@ Each story includes **acceptance criteria** that define when the story is consid
 - When both are active
 - Then the weather pattern shows on the LEDs and the sphere displays the emotion color simultaneously.
 
----
-
 ### Story 5 – Recover from connection loss
 
 **As a** user
@@ -82,8 +74,6 @@ Each story includes **acceptance criteria** that define when the story is consid
 - Given the WiFi connection drops
 - When it becomes available again
 - Then the device reconnects within 2 minutes without user intervention.
-
----
 
 ### Story 6 – Flexible weather source
 
@@ -103,8 +93,6 @@ Each story includes **acceptance criteria** that define when the story is consid
 - When the local sensor is active
 - Then the terrarium uses ambient conditions as the weather source.
 
----
-
 ### Story 7 – Demo mode
 
 **As a** presenter
@@ -118,8 +106,6 @@ Each story includes **acceptance criteria** that define when the story is consid
 - Then the terrarium cycles through at least 3 weather conditions and 3 emotions in a loop.
 - When demo mode is disabled
 - Then the system returns to normal operation (real weather + selected emotion).
-
----
 
 ## Notes
 

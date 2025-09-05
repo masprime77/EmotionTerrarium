@@ -1,5 +1,5 @@
 import time
-import config.config as config
+import firmware.config as config
 
 from services.wifi import WiFiService
 from drivers.led_builtin import LEDBuiltin

@@ -1,6 +1,6 @@
 # === Hardware configuration ===
-PIN_SENSOR = 15
-PIN_LED_RING = 16
+PIN_SENSOR = 16
+PIN_LED_RING = 18
 RING_PIXEL_COUNT = 7
 
 # === Times (ms) ===

@@ -65,7 +65,7 @@ A feature is considered done when:
 
 *Acceptance Criteria:*
 
-- Given a known JSON, `weather_service` returns `{wmo, label, temp, humidity, time}`.
+- Given a known latitude and longitude, `weather_service` returns `{wmo, label, temp, humidity, time}`.
 - On API failure, cached result (<15 min old) is returned.
 
 ---

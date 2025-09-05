@@ -8,8 +8,8 @@ SENSE_PERIOD_MS = 2_000
 WEATHER_PERIOD_MS = 60_000
 
 # === PASSWORDS ===
-WIFI_SSID = "iPhone 13 Pro Max de Mate"
-WIFI_PASSWORD = "Mateoooo11..."
+SSID = "iPhone 13 Pro Max de Mate"
+PASSWORD = "Mateoooo11..."
 
 # === COLORS (R,G,B) ===
 COLOR_OFF = (0, 0, 0)

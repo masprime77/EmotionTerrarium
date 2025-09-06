@@ -36,9 +36,9 @@ def pretty_weather(w, place=None):
     line_hdr = f"=== WEATHER NOW ==="
     loc_line = f"Place: {city}" + (f", {country}" if country else "")
     emoji = _wmo_emoji(w.get("wmo"))
-    sky = f"{emoji}  {w.get('label','n/a')} (WMO: {w.get('wmo','—')})"
-    t = _fmt(w.get("temp"), " C")
-    h = _fmt(w.get("humidity"), " %")
+    sky = f"{emoji}  {w.get('wmo_label','n/a')} (WMO: {w.get('wmo','—')})"
+    t = _fmt(w.get("temp_C"), " C")
+    h = _fmt(w.get("humidity_%"), " %")
     # age = w.get("age_s", 0)
     # age_str = f"{age}s old cache" if age else "fresh"
 
@@ -58,6 +58,6 @@ def pretty_weather_one_line(w, place=None):
     """
     city = (place or {}).get("city") or ""
     emoji = _wmo_emoji(w.get("wmo"))
-    t = _fmt(w.get("temp"), "°C")
-    lab = w.get("label","n/a")
+    t = _fmt(w.get("temp_C"), "C")
+    lab = w.get("wmo_label","n/a")
     print(f"{city} {emoji} {lab} {t} @ {w.get('time','—')}")

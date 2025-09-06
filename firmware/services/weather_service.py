@@ -1,6 +1,7 @@
 import time
 from services.http import http_get_json
 from services.mapping_wmo import WMO
+from services.mapping_wmo import label_for
 
 class WeatherService:
     def __init__(self, coordinates, cache_grace_sec=15*60, http=http_get_json):
@@ -35,7 +36,7 @@ class WeatherService:
         return {
             "ok": code is not None,
             "wmo": code,
-            "wmo_label": WMO.label_for(code) if code is not None else "n/a",
+            "wmo_label": label_for(code) if code is not None else "n/a",
             "time": cur.get("time"),
             "temp_C": cur.get("temperature_2m"),
             "feels_like_C": cur.get("apparent_temperature"),
@@ -59,7 +60,8 @@ class WeatherService:
             self._last = result
             self._last_ts = now
             return result
-        except Exception:
+        except Exception as e:
+            print(f"Error: {e}!")
             if self._last and (now - self._last_ts) <= self._grace:
                 res = dict(self._last)
                 res["age_s"] = now - self._last_ts

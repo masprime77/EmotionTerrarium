@@ -1,57 +1,80 @@
+import time
 from services.http import http_get_json
 from services.mapping_wmo import WMO
 
 class WeatherService:
-    def __init__(self, coordinates) -> None:
-        self.coordinates = coordinates
+    def __init__(self, coordinates, cache_grace_sec=15*60, http=http_get_json):
+        self.lat, self.lon = float(coordinates[0]), float(coordinates[1])
+        self._http = http
+        self._grace = int(cache_grace_sec)
+        self._last = None
+        self._last_ts = 0
+        self.source = "open-meteo"
 
-    def get_weather(self):
-        lat, lon = self.coordinates
-        url = (
+    def set_coordinates(self, lat, lon):
+        self.lat, self.lon = float(lat), float(lon)
+
+    def _now(self):
+        try:
+            return int(time.time())
+        except:
+            return time.ticks_ms() // 1000
+        
+    def _build_url(self):
+        return (
             "https://api.open-meteo.com/v1/forecast?"
             "latitude={lat}&longitude={lon}"
             "&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,weather_code"
-            "&hourly=precipitation_probability"
             "&timezone=auto"
-        ).format(lat=lat, lon=lon)
+        ).format(lat=self.lat, lon=self.lon)
 
-        data = http_get_json(url, timeout=10)
-        cur = data.get("current", {})
+    def _no_format_weather(self, raw):
+        cur = raw.get("current", {})
+        code = cur.get("weather_code")
 
-        results = {
+        return {
+            "ok": code is not None,
+            "wmo": code,
+            "wmo_label": WMO.label_for(code) if code is not None else "n/a",
             "time": cur.get("time"),
             "temp_C": cur.get("temperature_2m"),
             "feels_like_C": cur.get("apparent_temperature"),
             "humidity_%": cur.get("relative_humidity_2m"),
             "wind_kmh": cur.get("wind_speed_10m"),
-            "wmo_code": cur.get("weather_code")
+            "source": self.source,
+            "age_s":0,
         }
-
-        return results
     
-    def wmo_interpretation(code):
-        try:
-            return WMO.get(int(code), "Unknown")
-        except:
-            return "Unknown"
+    def get_now(self, cache_max_age_sec=0):
+        now = self._now()
         
-    def print_weather_interpretation(place, weather):
-        print("\n==== CURRENT WEATHER ====")
-        if place:
-            name = "{} - {}".format(place.get("city") or "Location", place.get("country") or "")
-            print("Place: ", name)
-        if weather.get("time"):
-            print("Time: ", w["time"])
-        if weather.get("temp_C") is not None:
-            print("Temp: {:.1f} C".format(w["temp_C"]))
-        if weather.get("feels_like_C") is not None:
-            print("Feels like: {:.1f} C".format(w["feels_like_C"]))
-        if weather.get("humidity_%") is not None:
-            print("Humidity: {} %".format(w["humidity_%"]))
-        if weather.get("wind_kmh") is not None:
-            print("Wind: {:.1f} km/h".format(w["wind_kmh"]))
-        if weather.get("wmo_code") is not None:
-            print("Sky: ", describe_wmo(w["wmo_code"]), "(WMO:", w["wmo_code"], ")")
-        if weather.get("precip_prob_%") is not None:
-            print("Precipitation probability (now): {} %".format(w["precip_prob_%"]))
-        print("========================\n")
+        if self._last and (now - self._last_ts) < int(cache_max_age_sec):
+            res = dict(self._last)
+            res["age_s"] = now - self._last_ts
+            return res
+        
+        try:
+            raw = self._http(self._build_url(), timeout=10)
+            result = self._no_format_weather(raw)
+            self._last = result
+            self._last_ts = now
+            return result
+        except Exception:
+            if self._last and (now - self._last_ts) <= self._grace:
+                res = dict(self._last)
+                res["age_s"] = now - self._last_ts
+                return res
+            
+            return {
+                "ok": False,
+                "wmo": None,
+                "label": "n/a",
+                "temp": None,
+                "humidity": None,
+                "time": None,
+                "source": self.source,
+                "age_s": 0
+            }
+    
+    def last(self):
+        return self._last

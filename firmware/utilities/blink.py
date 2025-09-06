@@ -1,7 +1,6 @@
 import time
-from abc import ABC, abstractmethod
 
-class Blink(ABC):
+class Blink:
     def blink(self, times:int=1, duration:float=0.5) -> None:
         for _ in range(times):
             self.on()

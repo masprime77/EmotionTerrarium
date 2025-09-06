@@ -1,4 +1,3 @@
-# services/wifi.py
 import time
 import network
 

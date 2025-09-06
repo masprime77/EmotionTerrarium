@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-class LED(ABC):
+class Led(ABC):
     @abstractmethod
     def on(self) -> None:
         pass

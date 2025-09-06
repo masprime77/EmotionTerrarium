@@ -1,8 +1,8 @@
 import machine
-from drivers.utilities.LED import LED
-from drivers.utilities.BLINK import Blink
+from utilities.led import Led
+from utilities.blink import Blink
 
-class LEDBuiltin(LED, Blink):
+class LEDBuiltin(Led, Blink):
     def __init__(self, pin="LED"):
         self._led = machine.Pin(pin, machine.Pin.OUT)
         self.off()

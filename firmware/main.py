@@ -3,23 +3,28 @@ import config
 
 from drivers.led_builtin import LEDBuiltin
 from services.wifi import WiFiService
-from services.http import http_get_json
 from services.weather_service import WeatherService
 from utilities.pretty_weather import pretty_weather
-
-
 
 def main():
     lat, lon = 49.8728, 8.6512
     place = {"city": "Darmstadt", "country": "Germany"}
 
     led = LEDBuiltin()
-    wifi = WiFiService(config.SSID, config.PASSWORD, led=led)
+    WiFiService(config.SSID, config.PASSWORD, led=led).connect(timeout_s=20)
     weather = WeatherService((lat, lon))
-    connection = False
 
-    wn = weather.get_now()
-    pretty_weather
+    wn = weather.get_now(cache_max_age_sec=0)
+    pretty_weather(wn, place)
+
+    weather_period_s = 600
+    t0 = time.ticks_ms()
+    while True:
+        if time.ticks_diff(time.ticks_ms(), t0) >= weather_period_s * 1000:
+            wn = weather.get_now(cache_max_age_sec=0)
+            pretty_weather(wn, place)
+            t0 = time.ticks_ms()
+        time.sleep_ms(50)
 
 
 if __name__ == "__main__":

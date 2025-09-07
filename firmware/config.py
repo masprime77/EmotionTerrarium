@@ -1,11 +1,10 @@
 # === Hardware configuration ===
 PIN_SENSOR = 16
-PIN_LED_RING = 18
-RING_PIXEL_COUNT = 7
+PIN_LED_RING = 17
+PIN_OVERHEAD_LED = 18
 
-# === Times (ms) ===
-SENSE_PERIOD_MS = 2_000
-WEATHER_PERIOD_MS = 60_000
+RING_PIXEL_COUNT = 7
+OVERHEAD_PIXEL_COUNT = 16
 
 # === PASSWORDS ===
 SSID = "iPhone 13 Pro Max de Mate"

@@ -19,3 +19,13 @@ COLOR_OFF = (0, 0, 0)
 COLOR_RED = (255, 0, 0)
 COLOR_GREEN  = (0, 255, 0)
 COLOR_BLUE = (0, 0, 255)
+
+COLOR_CLEAR   = (180, 150,  60)   # warm white
+COLOR_CLOUDY  = ( 30,  60, 120)   # soft blue
+COLOR_RAIN_0  = (  0,   0,  60)   # rain base blue
+COLOR_RAIN_1  = (  0,   0, 120)   # raindrop
+COLOR_SNOW_0  = (160, 160, 200)   # cold white
+COLOR_SNOW_1  = (220, 220, 255)   # twinkle
+COLOR_STORM_0 = (  0,   0,  40)   # dark background
+COLOR_STORM_1 = (220, 220, 255)   # lightning
+COLOR_UNKNOWN = ( 30,  15,   0)   # dim amber

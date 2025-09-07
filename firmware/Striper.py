@@ -1,8 +1,8 @@
 import machine, neopixel, time
 
-PIN = 17     # usa GP2; cambia si conectaste otro
-N = 8       # número de LEDs del anillo
-BRIGHT = 0.2  # limita consumo (0.0–1.0)
+PIN = 15     # usa GP2; cambia si conectaste otro
+N = 32       # número de LEDs del anillo
+BRIGHT = 1.0  # limita consumo (0.0–1.0)
 
 np = neopixel.NeoPixel(machine.Pin(PIN), N)
 

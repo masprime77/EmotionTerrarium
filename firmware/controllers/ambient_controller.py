@@ -4,105 +4,97 @@ import math
 import urandom as random
 from config import COLOR_CLEAR, COLOR_CLOUDY, COLOR_RAIN_0, COLOR_RAIN_1, COLOR_SNOW_0, COLOR_SNOW_1, COLOR_STORM_0, COLOR_STORM_1, COLOR_UNKNOWN
 from utilities import scale_rgb
+from drivers.led_neopixel import Led_neopixel
 
 class AmbientController:
-    def __init__(self, led, max_brightness=1.0, rain_step_ms=60, fps=30):
-        self.led = led
-        # self.led.brightness(max_brightness)
-        self._pixel_count = led.count()
+    def __init__(self, led:Led_neopixel, brightness=1.0, rain_step_ms=60, fps=30, dimmed_if_cached=True):
+        self._led = led
+        self._pixel_count = led.pixel_count()
+        self._led.brightness = brightness
+        self._default_brightness = brightness
+
         fps_ms = int(1000 / fps)
-        self.fps_ms = fps_ms
+        self._fps_ms = fps_ms
+        self._rain_step_ms = int(rain_step_ms)
 
         now = time.ticks_ms()
         self._t_last_frame = now
-        self._t_breathe0   = now # cloudy breathing phase
-        self._rain_pos     = 0 # rain head index
-        self._rain_step_ms = int(rain_step_ms)
+        self._t_breathe0 = now
+        self._t_rain_step = now
+        self._rain_pos = 0
+        
+        self._dimmed_if_cached = dimmed_if_cached
 
-        self._frame = [(0,0,0)] * self._n
+    def _pat_clear(self):
+        self._led.set_all(*COLOR_CLEAR, write=True)
 
-    def _pat_clear(self, dim_k=1.0):
-        self.ring.set_all(*scale_rgb(COLOR_CLEAR, dim_k), write=True)
+    def _pat_cloudy(self, speed=0.004):
+        difference = time.ticks_diff(time.ticks_ms(), self._t_breathe0)
+        intensity = 0.825 + 0.175 * math.sin(difference * speed)
+        color = scale_rgb(COLOR_CLOUDY, intensity)
+        self._led.set_all(*color, write=True)
 
-    def _pat_cloudy(self, dim_k=1.0):
-        # breathing on soft blue
-        dt = time.ticks_diff(time.ticks_ms(), self.t_breathe0)
-        k = 0.825 + 0.175 * math.sin(dt * 0.004)  # ~[0.65..1.0]
-        c = scale_rgb(COLOR_CLOUDY, k * dim_k)
-        self.ring.set_all(*c, write=True)
-
-    def _pat_rain(self, dim_k=1.0):
-        # move head every rain_step_ms
+    def _pat_rain(self, tail=4):
         now = time.ticks_ms()
-        if time.ticks_diff(now, self.t_rain_step) >= self.rain_step_ms:
-            self.rain_pos = (self.rain_pos + 1) % self.n
-            self.t_rain_step = now
+        if time.ticks_diff(now, self._t_rain_step) >= self._rain_step_ms:
+            self._rain_pos = (self._rain_pos + 1) % self._pixel_count
+            self._t_rain_step = now
 
-        # clear, then draw head + fading tail
-        self.ring.set_all(0, 0, 0, write=False)
-        tail = 4
-        for i in range(self.n):
-            d = (i - self.rain_pos) % self.n
-            if d == 0:
-                r, g, b = scale_rgb(COLOR_RAIN_1, dim_k)
-                self.ring.set_pixel(i, r, g, b, write=False)
-            elif d < tail:
-                k = (tail - d) / tail
-                r, g, b = scale_rgb(COLOR_RAIN_0, k * dim_k)
-                self.ring.set_pixel(i, r, g, b, write=False)
-        self.ring.show()
+        self._led.clear_buffer(show=True)
+        for i in range(self._pixel_count):
+            px_distance_to_rain_px = (i - self._rain_pos) % self._pixel_count
+            if px_distance_to_rain_px == 0:
+                r, g, b = scale_rgb(COLOR_RAIN_1)
+                self._led.set_pixel(i, r, g, b, write=False)
+            elif px_distance_to_rain_px < tail:
+                intensity = (tail - px_distance_to_rain_px) / tail
+                r, g, b = scale_rgb(COLOR_RAIN_0, intensity)
+                self._led.set_pixel(i, r, g, b, write=False)
+        self._led.show()
 
-    def _pat_snow(self, dim_k=1.0, twinkle_prob=0.05):
-        # cold base + random one-frame twinkles
-        base = scale_rgb(COLOR_SNOW_0, dim_k)
-        twk  = scale_rgb(COLOR_SNOW_1, dim_k)
-        self.ring.set_all(*base, write=False)
-        threshold = int(255 * twinkle_prob)
-        for i in range(self.n):
-            if (random.getrandbits(8) & 0xFF) < threshold:
-                self.ring.set_pixel(i, *twk, write=False)
-        self.ring.show()
+    def _pat_snow(self, twinkle_prob=0.05):
+        base = COLOR_SNOW_0
+        twinkle = COLOR_SNOW_1
+        self._led.set_all(*base, write=False)
+        for i in range(self._pixel_count):
+            if (random.randint(0, 100) / 100.0) < twinkle_prob:
+                self._led.set_pixel(i, *twinkle, write=False)
+        self._led.show()
 
-    def _pat_storm(self, dim_k=1.0, flash_prob=0.03):
-        do_flash = (random.getrandbits(8) & 0xFF) < int(255 * flash_prob)
-        c = COLOR_STORM_1 if do_flash else COLOR_STORM_0
-        self.ring.set_all(*scale_rgb(c, dim_k), write=True)
+    def _pat_storm(self, flash_prob=0.03):
+        do_flash = (random.randint(0, 100) / 100.0) < flash_prob
+        color = COLOR_STORM_1 if do_flash else COLOR_STORM_0
+        self._led.set_all(*color, write=True)
 
-    def _pat_unknown(self, dim_k=1.0):
-        self.ring.set_all(*scale_rgb(COLOR_UNKNOWN, dim_k), write=True)
+    def _pat_unknown(self):
+        self._led.set_all(COLOR_UNKNOWN, write=True)
 
-    # --------- public render step ---------
     def render(self, weather):
-        """
-        Non-blocking render step. Call this every loop iteration.
-        """
-        # simple frame pacing (skip if too soon for non-rain patterns)
         now = time.ticks_ms()
         if time.ticks_diff(now, self.t_last_frame) < self.fps_ms:
-            # rain self-clocks via rain_step_ms; others can skip
             if weather.get("wmo") not in (61, 63, 65):
                 return
-        self.t_last_frame = now
+        self._t_last_frame = now
 
         ok  = weather.get("ok", False)
         wmo = weather.get("wmo")
         age = weather.get("age_s", 0)
 
-        # dim 20% if data is cached
-        dim_k = 0.8 if (age and age > 0) else 1.0
+        if self._dimmed_if_cached:
+            self._led.brightness = 0.8 if (age and age > 0) else self._default_brightness
 
         if not ok or wmo is None:
-            self._pat_unknown(dim_k)
+            self._pat_unknown()
         elif wmo in (0, 1):
-            self._pat_clear(dim_k)
+            self._pat_clear()
         elif wmo in (2, 3):
-            self._pat_cloudy(dim_k)
+            self._pat_cloudy()
         elif wmo in (61, 63, 65):
-            self._pat_rain(dim_k)
+            self._pat_rain()
         elif wmo in (71, 73, 75):
-            self._pat_snow(dim_k)
+            self._pat_snow()
         elif wmo in (95, 96, 99):
-            self._pat_storm(dim_k)
+            self._pat_storm()
         else:
-            self._pat_unknown(dim_k)
+            self._pat_unknown()
     

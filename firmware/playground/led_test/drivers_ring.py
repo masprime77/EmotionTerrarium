@@ -11,18 +11,18 @@ def main():
         time.sleep(2)
 
     for p in range(256):
-        ring.set_all(*ring.cycle(p), write=True)
+        ring.set_all(*ring.cycle(p), show=True)
         time.sleep_ms(20)
     
-    ring.set_all(0,0,0, write=True)
+    ring.set_all(0,0,0, show=True)
     for i in range(10):
-        for i in range(ring.count()):
-            ring.set_pixel(i, 60, 60, 120, write=False)
+        for i in range(ring._pixel_count):
+            ring.set_pixel(i, 60, 60, 120, show=False)
             ring.show()
-            time.sleep(0.1)
-            ring.set_pixel(i, 0, 0, 0, write=False)
+            time.sleep(0.5)
+            ring.set_pixel(i, 0, 0, 0, show=False)
     
-    ring.clear()
+    ring.clear_buffer(show=True)
 
 
 if __name__ == "__main__":

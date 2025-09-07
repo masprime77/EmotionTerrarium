@@ -1,6 +1,6 @@
 # === Hardware configuration ===
 PIN_SENSOR = 16
-PIN_LED_RING = 17
+PIN_LED_RING = 18
 PIN_OVERHEAD_LED = 18
 
 PIXEL_COUNT_RING = 7

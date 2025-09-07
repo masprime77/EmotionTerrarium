@@ -1,13 +1,8 @@
-# tests/test_ambient_m3.py
-# Run this on the Pico W.
-# Press Ctrl+C to stop; LEDs will be cleared on exit.
-
 import time
-from drivers.led_neopixel import Led_neopixel as LedRing
+from drivers.led_neopixel import Led_neopixel
 from controllers.ambient_controller import AmbientController
 
-def W(wmo, *, ok=True, age_s=0):
-    """Build a canonical M2 weather dict minimal for the controller."""
+def mock_weather(wmo, ok=True, age_s=0):
     return {
         "ok": ok,
         "wmo": wmo,
@@ -15,47 +10,40 @@ def W(wmo, *, ok=True, age_s=0):
         "temp": None,
         "humidity": None,
         "time": None,
-        "source": "fake",
+        "source": "MOCK",
         "age_s": age_s,
     }
 
 def demo_sequence():
-    """
-    Sequence of (description, weather dict, duration seconds).
-    Includes a cached variant to verify the 20% dim behavior.
-    """
     return [
-        ("Unknown / error", W(None, ok=False), 4),
-        ("Clear",           W(0),              4),
-        ("Cloudy (breathing)", W(2),           6),
-        ("Rain (moving drop)", W(63),          6),
-        ("Snow (twinkles)", W(73),             6),
-        ("Storm (flashes)", W(95),             6),
-        ("Clear (cached dim)", W(0, age_s=120), 4),
+        ("Unknown / error", mock_weather(None, ok=False), 5),
+        ("Clear", mock_weather(0), 5),
+        ("Cloudy (breathing)", mock_weather(2), 5),
+        ("Rain (moving drop)", mock_weather(63), 5),
+        ("Snow (twinkles)", mock_weather(73), 5),
+        ("Storm (flashes)", mock_weather(95), 5),
+        ("Clear (cached dim)", mock_weather(0, age_s=120), 5),
     ]
 
 def main():
-    # Adjust pin/count to your hardware
-    ring = LedRing(pin=16, pixel_count=32, brightness=1.0, auto_write=False)
-    ctl  = AmbientController(ring, max_brightness=1.0,
-                             rain_step_ms=60,  # raindrop speed
-                             fps=30)        # target frame time for other patterns
+    strip = Led_neopixel(pin=16, pixel_count=32, brightness=1.0, auto_write=False)
+    controller = AmbientController(strip)
 
     try:
         while True:
-            for desc, weather, seconds in demo_sequence():
-                print("Pattern:", desc)
+            for description, weather, seconds in demo_sequence():
+                print("Pattern:", description)
                 t0 = time.ticks_ms()
                 # Run the pattern for 'seconds'
                 while time.ticks_diff(time.ticks_ms(), t0) < seconds * 1000:
-                    ctl.render(weather)     # non-blocking step
-                    time.sleep_ms(40)       # ~25 FPS main loop pacing
+                    controller.render(weather)
+                    time.sleep_ms(5) # small delay to avoid busy loop for CPU
 
     except KeyboardInterrupt:
         pass
     finally:
         # Ensure LEDs are turned off on exit
-        ring.set_all(0, 0, 0, write=True)
+        strip.set_all(0, 0, 0, write=True)
 
 if __name__ == "__main__":
     main()

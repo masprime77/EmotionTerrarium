@@ -61,7 +61,7 @@ class Led_ring:
         if show_it:
             self.show()
 
-    def wheel(self, pos):
+    def cycle(self, pos):
         pos = int(pos) & 255
         if pos < 85:
             return (255 - pos * 3, pos * 3, 0)

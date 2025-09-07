@@ -1,9 +1,9 @@
 import time
-from drivers.led_ring import Led_ring
+from drivers.led_neopixel import Led_neopixel
 from config import PIN_LED_RING, PIXEL_COUNT_RING, BRIGHTNESS_LED_RING
 
 def main():
-    ring = Led_ring(pin=PIN_LED_RING, pixel_count=PIXEL_COUNT_RING, brightness=BRIGHTNESS_LED_RING, auto_write=False)
+    ring = Led_neopixel(pin=PIN_LED_RING, pixel_count=PIXEL_COUNT_RING, brightness=BRIGHTNESS_LED_RING, auto_write=False)
 
     for c in [(255, 0, 0), (0, 255, 0), (0, 0, 255)]:
         r, g, b = c

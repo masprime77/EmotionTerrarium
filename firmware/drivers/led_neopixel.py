@@ -1,9 +1,8 @@
 import machine
 import neopixel
-import time
 from utilities.scale_rgb import scale_rgb
 
-class Led_ring:
+class Led_neopixel:
     def __init__(self, pin, pixel_count, brightness=1, auto_write=True):
         self._led = neopixel.NeoPixel(machine.Pin(pin), pixel_count)
         self._pixel_count = pixel_count

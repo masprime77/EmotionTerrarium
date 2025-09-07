@@ -3,7 +3,7 @@
 # Press Ctrl+C to stop; LEDs will be cleared on exit.
 
 import time
-from drivers.led_ring import LedRing
+from drivers.led_neopixel import Led_neopixel as LedRing
 from controllers.ambient_controller import AmbientController
 
 def W(wmo, *, ok=True, age_s=0):
@@ -36,7 +36,7 @@ def demo_sequence():
 
 def main():
     # Adjust pin/count to your hardware
-    ring = LedRing(pin=16, count=32, brightness=1.0, auto_write=False)
+    ring = LedRing(pin=16, pixel_count=32, brightness=1.0, auto_write=False)
     ctl  = AmbientController(ring, max_brightness=1.0,
                              rain_step_ms=60,  # raindrop speed
                              fps=30)        # target frame time for other patterns

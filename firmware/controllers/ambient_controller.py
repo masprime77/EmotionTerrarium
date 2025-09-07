@@ -8,7 +8,7 @@ from utilities import scale_rgb
 class AmbientController:
     def __init__(self, led, max_brightness=1.0, rain_step_ms=60, fps=30):
         self.led = led
-        self.led.brightness(max_brightness)
+        # self.led.brightness(max_brightness)
         self._pixel_count = led.count()
         fps_ms = int(1000 / fps)
         self.fps_ms = fps_ms

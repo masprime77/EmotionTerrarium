@@ -4,8 +4,8 @@ from config import PIN_LED_RING, PIXEL_COUNT_RING, BRIGHTNESS_LED_RING, PIN_OVER
 from config import COLOR_ON, COLOR_OFF
 
 def main():
-    ring = Led_neopixel(pin=PIN_LED_RING, pixel_count=PIXEL_COUNT_RING, brightness=BRIGHTNESS_LED_RING, auto_write=False)
-    strip = Led_neopixel(pin=PIN_OVERHEAD_LED, pixel_count=PIXEL_COUNT_OVERHEAD, brightness=BRIGHTNESS_OVERHEAD_LED, auto_write=False)
+    ring = Led_neopixel(pin=16, pixel_count=7, brightness=BRIGHTNESS_LED_RING, auto_write=False)
+    strip = Led_neopixel(pin=15, pixel_count=32, brightness=BRIGHTNESS_OVERHEAD_LED, auto_write=False)
 
     for c in [(255, 0, 0), (0, 255, 0), (0, 0, 255)]:
         r, g, b = c

@@ -21,7 +21,7 @@ def main():
     ring.off()
     strip.off()
     
-    for i in range(10):
+    while True:
         for i in range(ring._pixel_count):
             ring.set_pixel(i, *COLOR_ON, show=True)
             time.sleep(0.1)

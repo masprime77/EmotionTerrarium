@@ -3,7 +3,7 @@ import random
 import math
 import urandom as random
 from config import COLOR_CLEAR, COLOR_CLOUDY, COLOR_RAIN_0, COLOR_RAIN_1, COLOR_SNOW_0, COLOR_SNOW_1, COLOR_STORM_0, COLOR_STORM_1, COLOR_UNKNOWN
-from utilities import scale_rgb
+from utilities.scale_rgb import scale_rgb
 from drivers.led_neopixel import Led_neopixel
 
 class AmbientController:
@@ -26,13 +26,13 @@ class AmbientController:
         self._dimmed_if_cached = dimmed_if_cached
 
     def _pat_clear(self):
-        self._led.set_all(*COLOR_CLEAR, write=True)
+        self._led.set_all(*COLOR_CLEAR, show=True)
 
     def _pat_cloudy(self, speed=0.004):
         difference = time.ticks_diff(time.ticks_ms(), self._t_breathe0)
-        intensity = 0.825 + 0.175 * math.sin(difference * speed)
+        intensity = 0.7 + 0.3 * math.sin(difference * speed)
         color = scale_rgb(COLOR_CLOUDY, intensity)
-        self._led.set_all(*color, write=True)
+        self._led.set_all(*color, show=True)
 
     def _pat_rain(self, tail=4):
         now = time.ticks_ms()
@@ -40,38 +40,37 @@ class AmbientController:
             self._rain_pos = (self._rain_pos + 1) % self._pixel_count
             self._t_rain_step = now
 
-        self._led.clear_buffer(show=True)
+        self._led.set_all(*COLOR_RAIN_0, show=False)
         for i in range(self._pixel_count):
             px_distance_to_rain_px = (i - self._rain_pos) % self._pixel_count
             if px_distance_to_rain_px == 0:
-                r, g, b = scale_rgb(COLOR_RAIN_1)
-                self._led.set_pixel(i, r, g, b, write=False)
+                self._led.set_pixel(i, *COLOR_RAIN_1, show=False)
             elif px_distance_to_rain_px < tail:
                 intensity = (tail - px_distance_to_rain_px) / tail
-                r, g, b = scale_rgb(COLOR_RAIN_0, intensity)
-                self._led.set_pixel(i, r, g, b, write=False)
+                r, g, b = scale_rgb(COLOR_RAIN_1, intensity)
+                self._led.set_pixel(i, r, g, b, show=False)
         self._led.show()
 
     def _pat_snow(self, twinkle_prob=0.05):
         base = COLOR_SNOW_0
         twinkle = COLOR_SNOW_1
-        self._led.set_all(*base, write=False)
+        self._led.set_all(*base, show=False)
         for i in range(self._pixel_count):
             if (random.randint(0, 100) / 100.0) < twinkle_prob:
-                self._led.set_pixel(i, *twinkle, write=False)
+                self._led.set_pixel(i, *twinkle, show=False)
         self._led.show()
 
     def _pat_storm(self, flash_prob=0.03):
         do_flash = (random.randint(0, 100) / 100.0) < flash_prob
         color = COLOR_STORM_1 if do_flash else COLOR_STORM_0
-        self._led.set_all(*color, write=True)
+        self._led.set_all(*color, show=True)
 
     def _pat_unknown(self):
-        self._led.set_all(COLOR_UNKNOWN, write=True)
+        self._led.set_all(*COLOR_UNKNOWN, show=True)
 
     def render(self, weather):
         now = time.ticks_ms()
-        if time.ticks_diff(now, self.t_last_frame) < self.fps_ms:
+        if time.ticks_diff(now, self._t_last_frame) < self._fps_ms:
             if weather.get("wmo") not in (61, 63, 65):
                 return
         self._t_last_frame = now

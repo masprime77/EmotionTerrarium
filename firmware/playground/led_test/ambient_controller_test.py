@@ -26,11 +26,10 @@ def demo_sequence():
     ]
 
 def main():
-    strip = Led_neopixel(pin=16, pixel_count=32, brightness=1.0, auto_write=False)
+    strip = Led_neopixel(pin=15, pixel_count=32, brightness=1.0, auto_write=False)
     controller = AmbientController(strip)
-
-    try:
-        while True:
+    while True:
+        try:
             for description, weather, seconds in demo_sequence():
                 print("Pattern:", description)
                 t0 = time.ticks_ms()
@@ -39,11 +38,11 @@ def main():
                     controller.render(weather)
                     time.sleep_ms(5) # small delay to avoid busy loop for CPU
 
-    except KeyboardInterrupt:
-        pass
-    finally:
-        # Ensure LEDs are turned off on exit
-        strip.set_all(0, 0, 0, write=True)
+        except KeyboardInterrupt:
+            break
+
+        finally:
+            strip.set_all(0, 0, 0, show=True)
 
 if __name__ == "__main__":
     main()

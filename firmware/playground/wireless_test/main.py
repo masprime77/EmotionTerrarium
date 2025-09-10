@@ -1,10 +1,10 @@
 import network
 import time
-import secrets
+from config import SSID, PASSWORD
 
 wlan = network.WLAN(network.STA_IF)  # modo estación (cliente)
 wlan.active(True)
-wlan.connect(secrets.SSID, secrets.PASSWORD)
+wlan.connect(SSID, PASSWORD)
 
 # Esperar hasta que se conecte
 while not wlan.isconnected():

@@ -4,10 +4,10 @@ import math
 import urandom as random
 from config import COLOR_CLEAR, COLOR_CLOUDY, COLOR_RAIN_0, COLOR_RAIN_1, COLOR_SNOW_0, COLOR_SNOW_1, COLOR_STORM_0, COLOR_STORM_1, COLOR_UNKNOWN
 from utilities.scale_rgb import scale_rgb
-from drivers.led_neopixel import Led_neopixel
+from drivers.led_neopixel import LedNeopixel
 
 class AmbientController:
-    def __init__(self, led:Led_neopixel, brightness=1.0, rain_step_ms=60, fps=30, dimmed_if_cached=True):
+    def __init__(self, led:LedNeopixel, brightness=1.0, rain_step_ms=60, fps=30, dimmed_if_cached=True):
         self._led = led
         self._pixel_count = led.pixel_count()
         self._led.brightness = brightness

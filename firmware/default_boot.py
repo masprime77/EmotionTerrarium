@@ -1,19 +1,19 @@
 import time
-from drivers.led_builtin import LEDBuiltin
+from drivers.led_builtin import LedBuiltin
 from drivers.led_neopixel import LedNeopixel
-from config import PIN_LED_RING, RING_PIXEL_COUNT, PIN_OVERHEAD_LED, PIXEL_COUNT_OVERHEAD
+from config import PIN_LED_RING, PIXEL_COUNT_RING, PIN_OVERHEAD_LED, PIXEL_COUNT_OVERHEAD
 from config import COLOR_RED, COLOR_GREEN, COLOR_BLUE
 from config import COLOR_ON, COLOR_OFF
 
 def main():
-    builtin = LEDBuiltin()
+    builtin = LedBuiltin()
     print("[BOOT] Built-in LED ON")
     builtin.blink(5, 0.5)
     builtin.off()
 
     ring = {
         "name": "Ring",
-        "light": LedNeopixel(pin=PIN_LED_RING, pixel_count=RING_PIXEL_COUNT,auto_write=True)
+        "light": LedNeopixel(pin=PIN_LED_RING, pixel_count=PIXEL_COUNT_RING,auto_write=True)
     }
 
     overhead = {
@@ -51,6 +51,7 @@ def main():
                     light["light"].set_pixel(i, *COLOR_ON)
                     time.sleep(0.1)
                     light["light"].set_pixel(i, *COLOR_OFF)
+            time.sleep_ms(50)
     
     except KeyboardInterrupt:
         print("\n[BOOT] LED cycle test interrupted by user.")

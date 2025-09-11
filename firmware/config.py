@@ -1,7 +1,7 @@
 # === Hardware configuration ===
 PIN_SENSOR = None # Non yet implemented.
-PIN_LED_RING = 16
-PIN_OVERHEAD_LED = 15
+PIN_LED_RING = 17
+PIN_OVERHEAD_LED = 16
 
 PIXEL_COUNT_RING = 7
 PIXEL_COUNT_OVERHEAD = 32

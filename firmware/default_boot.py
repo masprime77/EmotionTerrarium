@@ -7,18 +7,18 @@ from config import COLOR_ON, COLOR_OFF
 
 def main():
     builtin = LedBuiltin()
-    print("[BOOT] Built-in LED ON")
-    builtin.blink(5, 0.5)
+    print("[BOOT] Built-in LED blinking test")
+    builtin.blink(1, 0.5)
     builtin.off()
 
     ring = {
         "name": "Ring",
-        "light": LedNeopixel(pin=PIN_LED_RING, pixel_count=PIXEL_COUNT_RING,auto_write=True)
+        "light": LedNeopixel(pin=PIN_LED_RING, pixel_count=PIXEL_COUNT_RING,auto_show=True)
     }
 
     overhead = {
         "name": "Overhead",
-        "light": LedNeopixel(pin=PIN_OVERHEAD_LED, pixel_count=PIXEL_COUNT_OVERHEAD, auto_write=True)
+        "light": LedNeopixel(pin=PIN_OVERHEAD_LED, pixel_count=PIXEL_COUNT_OVERHEAD, auto_show=True)
     }
 
     rgb_lights = [ring, overhead]
@@ -28,15 +28,15 @@ def main():
 
     for light in rgb_lights:
         print(f"[BOOT] {light["name"]} LED: RED")
-        light["light"].set_all(*COLOR_RED)
+        light["light"].set_all(*COLOR_RED, show=None)
         time.sleep(1)
 
         print(f"[BOOT] {light["name"]} LED: GREEN")
-        light["light"].set_all(*COLOR_GREEN)
+        light["light"].set_all(*COLOR_GREEN, show=None)
         time.sleep(1)
 
         print(f"[BOOT] {light["name"]} LED: BLUE")
-        light["light"].set_all(*COLOR_BLUE)
+        light["light"].set_all(*COLOR_BLUE, show=None)
         time.sleep(1)
 
         light["light"].off()

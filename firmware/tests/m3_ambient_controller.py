@@ -51,7 +51,7 @@ def main():
 
 
     finally:
-        strip.set_all(*COLOR_OFF)
+        strip.set_all(*COLOR_OFF, show=None)
 
 if __name__ == "__main__":
     main()

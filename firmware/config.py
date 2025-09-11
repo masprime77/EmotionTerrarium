@@ -29,3 +29,10 @@ COLOR_SNOW_1 = (220, 220, 255)   # twinkle
 COLOR_STORM_0 = (0, 0, 40)   # dark background
 COLOR_STORM_1 = (200, 255, 255)   # lightning
 COLOR_UNKNOWN = (30, 15, 0)   # dim amber
+
+# === DEV OPTIONS ===
+DEBUG = True
+M0_TEST = False
+M1_TEST = False
+M2_TEST = False
+M3_TEST = True

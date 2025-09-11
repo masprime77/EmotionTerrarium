@@ -1,0 +1,9 @@
+{
+    "micropico.syncFolder": "firmware",
+    "python.languageServer": "Pylance",
+    "python.analysis.typeCheckingMode": "off",
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportMissingImports": "none",
+        "reportMissingModuleSource": "none"
+  }
+}

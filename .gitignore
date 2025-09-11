@@ -10,7 +10,7 @@ venv/
 env/
 
 # === Editor/IDE files ===
-.vscode/
+# .vscode/
 .idea/
 
 # === OS-specific ===

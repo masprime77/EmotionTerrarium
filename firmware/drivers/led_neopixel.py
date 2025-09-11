@@ -49,14 +49,14 @@ class Led_neopixel:
         if pixel < 0 or pixel >= self._pixel_count:
             raise ValueError("Pixel index out of range")
         self._frame[pixel] = (r, g, b)
-        show_it = self._auto_show if show is None else bool(show)
+        show_it = self._auto_write if show is None else bool(show)
         if show_it:
             self.show()
 
     def set_all(self, r, g, b, show:bool):
         for pixel in range(self._pixel_count):
             self._frame[pixel] = (r, g, b)
-        show_it = self._auto_show if show is None else bool(show)
+        show_it = self._auto_write if show is None else bool(show)
         if show_it:
             self.show()
 

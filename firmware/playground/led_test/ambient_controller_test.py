@@ -1,6 +1,7 @@
 import time
 from drivers.led_neopixel import Led_neopixel
 from controllers.ambient_controller import AmbientController
+from config import PIN_OVERHEAD_LED, PIXEL_COUNT_OVERHEAD, BRIGHTNESS_OVERHEAD_LED
 
 def mock_weather(wmo, ok=True, age_s=0):
     return {
@@ -26,7 +27,7 @@ def demo_sequence():
     ]
 
 def main():
-    strip = Led_neopixel(pin=15, pixel_count=32, brightness=1.0, auto_write=False)
+    strip = Led_neopixel(pin=PIN_OVERHEAD_LED, pixel_count=PIXEL_COUNT_OVERHEAD, brightness=BRIGHTNESS_OVERHEAD_LED, auto_write=False)
     controller = AmbientController(strip)
     while True:
         try:

@@ -10,8 +10,8 @@ BRIGHTNESS_LED_RING = 1.0
 BRIGHTNESS_OVERHEAD_LED = 1.0
 
 # === PASSWORDS ===
-SSID = "iPhone 13 Pro Max de Mate"
-PASSWORD = "Mateoooo11..."
+SSID = "Videowall"
+PASSWORD = "teamdarmstadt"
 
 # === COLORS (R,G,B) ===
 COLOR_ON = (255, 255, 255)

@@ -19,7 +19,7 @@ def main():
     else: print("Not connected :(")
     weather = WeatherService((lat, lon))
 
-    wn = weather.get_now(cache_max_age_sec=0)
+    wn = weather.get_now()
     pretty_weather(wn, place)
     pretty_weather_one_line(wn, place)
 

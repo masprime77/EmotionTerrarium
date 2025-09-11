@@ -46,7 +46,7 @@ class WeatherService:
             "age_s":0,
         }
     
-    def get_now(self, cache_max_age_sec=0):
+    def get_now(self, cache_max_age_sec=0, timeout=10):
         now = self._now()
         
         if self._last and (now - self._last_ts) < int(cache_max_age_sec):
@@ -55,7 +55,7 @@ class WeatherService:
             return res
         
         try:
-            raw = self._http(self._build_url(), timeout=10)
+            raw = self._http(self._build_url(), timeout=timeout)
             result = self._no_format_weather(raw)
             self._last = result
             self._last_ts = now

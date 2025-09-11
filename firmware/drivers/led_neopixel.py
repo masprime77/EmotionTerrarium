@@ -1,13 +1,14 @@
 import machine
 import neopixel
+from utilities.blink import Blink
 from utilities.scale_rgb import scale_rgb
 
-class Led_neopixel:
-    def __init__(self, pin, pixel_count, brightness=1, auto_write=True):
+class LedNeopixel(Blink):
+    def __init__(self, pin, pixel_count, brightness=1, auto_show=True):
         self._led = neopixel.NeoPixel(machine.Pin(pin), pixel_count)
         self._pixel_count = pixel_count
         self._brightness = brightness
-        self._auto_write = auto_write
+        self._auto_show = auto_show
         self._frame = [(0, 0, 0)] * self._pixel_count
         self.off()
 
@@ -49,14 +50,14 @@ class Led_neopixel:
         if pixel < 0 or pixel >= self._pixel_count:
             raise ValueError("Pixel index out of range")
         self._frame[pixel] = (r, g, b)
-        show_it = self._auto_write if show is None else bool(show)
+        show_it = self._auto_show if show is None else bool(show)
         if show_it:
             self.show()
 
     def set_all(self, r, g, b, show:bool):
         for pixel in range(self._pixel_count):
             self._frame[pixel] = (r, g, b)
-        show_it = self._auto_write if show is None else bool(show)
+        show_it = self._auto_show if show is None else bool(show)
         if show_it:
             self.show()
 

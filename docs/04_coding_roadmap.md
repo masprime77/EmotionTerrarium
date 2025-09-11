@@ -27,7 +27,7 @@ A feature is considered done when:
 
 ### M0 — Bootstrap (repo + hello hardware)
 
-**User value:** Board blinks to confirm setup.
+**import timeUser value:** Board blinks to confirm setup.
 
 - Create firmware structure (`/drivers`, `/services`, `/config`, `/controllers`).
 - Implement `drivers/led_builtin.py` for on-board LED.

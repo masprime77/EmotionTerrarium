@@ -1,39 +1,40 @@
-import time
-from drivers.led_neopixel import Led_neopixel
-from config import PIN_LED_RING, PIXEL_COUNT_RING, BRIGHTNESS_LED_RING, PIN_OVERHEAD_LED, PIXEL_COUNT_OVERHEAD, BRIGHTNESS_OVERHEAD_LED
-from config import COLOR_ON, COLOR_OFF
+import boot
+from utilities.timeout_input import input_with_timeout
+from tests import m0_bootstrap
+from tests import m1_wifi_http
+from tests import m2_weather_service
+from tests import m3_ambient_controller
 
 def main():
-    # ring = Led_neopixel(pin=PIN_LED_RING, pixel_count=PIXEL_COUNT_RING, brightness=BRIGHTNESS_LED_RING, auto_write=False)
-    strip = Led_neopixel(pin=PIN_OVERHEAD_LED, pixel_count=PIXEL_COUNT_OVERHEAD, brightness=BRIGHTNESS_OVERHEAD_LED, auto_write=False)
+    select = input_with_timeout(prompt="Press Enter to enter debug mode (or wait 3s for default boot): ", timeout=3, default="n") == ""
 
-    for c in [(255, 0, 0), (0, 255, 0), (0, 0, 255)]:
-        r, g, b = c
-        # ring.set_all(r, g, b, show=True)
-        strip.set_all(r, g, b, show=True)
-        time.sleep(2)
+    if not select:
+        boot.main()
+        return
 
-    for p in range(256):
-        # ring.set_all(*ring.cycle(p), show=True)
-        strip.set_all(*strip.cycle(p), show=True)
-        time.sleep_ms(20)
+    all_tests = input_with_timeout("Run all tests? (y/n): ", timeout=5, default="n").strip().lower() == 'y'
+
+    if not all_tests:
+        m0 = input("Run m0_bootstrap? [LED builtin test] (y/n): ").strip().lower() == 'y'
+        m1 = input("Run m1_wifi_http? [Connection and HTTP test](y/n): ").strip().lower() == 'y'
+        m2 = input("Run m2_weather_service? [Weather fetch test](y/n): ").strip().lower() == 'y'
+        m3 = input("Run m3_ambient_controller? [Ambient light control test](y/n): ").strip().lower() == 'y'
     
-    # ring.off()
-    strip.off()
+    if all_tests or m0:
+        print("=== Running m0_bootstrap ===")
+        m0_bootstrap.main()
     
-    while True:
-        # for i in range(ring._pixel_count):
-        #     ring.set_pixel(i, *COLOR_ON, show=True)
-        #     time.sleep(0.1)
-        #     ring.set_pixel(i, *COLOR_OFF, show=True)
-        
-        for i in range(strip._pixel_count):
-            strip.set_pixel(i, *COLOR_ON, show=True)
-            time.sleep(0.1)
-            strip.set_pixel(i, *COLOR_OFF, show=True)
+    if all_tests or m1:
+        print("=== Running m1_wifi_http ===")
+        m1_wifi_http.main()
+
+    if all_tests or m2:
+        print("=== Running m2_weather_service ===")
+        m2_weather_service.main(location="D")
     
-    ring.clear_buffer(show=True)
-    strip.clear_buffer(show=True)
+    if all_tests or m3:
+        print("=== Running m3_ambient_controller ===")
+        m3_ambient_controller.main()
 
 
 if __name__ == "__main__":

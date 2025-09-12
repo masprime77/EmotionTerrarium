@@ -17,19 +17,20 @@ def mock_weather(wmo, ok=True, age_s=0):
     }
 
 def demo_sequence():
+    time_s = 3
     return [
-        ("Unknown / error", mock_weather(None, ok=False), 5),
-        ("Clear", mock_weather(0), 5),
-        ("Cloudy (breathing)", mock_weather(2), 5),
-        ("Rain (moving drop)", mock_weather(63), 5),
-        ("Snow (twinkles)", mock_weather(73), 5),
-        ("Storm (flashes)", mock_weather(95), 5),
-        ("Clear (cached dim)", mock_weather(0, age_s=120), 5),
+        ("Unknown / error", mock_weather(None, ok=False), time_s),
+        ("Clear", mock_weather(0), time_s),
+        ("Cloudy (moving cloud)", mock_weather(1), time_s),
+        ("Rain (drops)", mock_weather(63), time_s),
+        ("Snow (twinkles)", mock_weather(73), time_s),
+        ("Storm (flashes)", mock_weather(95), time_s),
+        ("Clear (cached dim)", mock_weather(0, age_s=120), time_s),
     ]
 
 def main():
-    strip = LedNeopixel(pin=PIN_OVERHEAD_LED, pixel_count=PIXEL_COUNT_OVERHEAD, brightness=BRIGHTNESS_OVERHEAD_LED, auto_show=True)
-    controller = AmbientController(strip, dimmed_if_cached=False)
+    strip = LedNeopixel(pin=PIN_OVERHEAD_LED, pixel_count=PIXEL_COUNT_OVERHEAD, brightness=BRIGHTNESS_OVERHEAD_LED, auto_show=False)
+    controller = AmbientController(strip, brightness=BRIGHTNESS_OVERHEAD_LED, dimmed_if_cached=True)
 
     print("[Test M3] Ambient LED controller demo")
     
@@ -40,7 +41,7 @@ def main():
 
             while time.ticks_diff(time.ticks_ms(), t0) < seconds * 1000:
                 controller.render(weather)
-                time.sleep_ms(5)
+                time.sleep_ms(10)
 
         print("Demo completed.")
         print("[Test M3] Done.\n")
@@ -51,7 +52,7 @@ def main():
 
 
     finally:
-        strip.set_all(*COLOR_OFF, show=None)
+        strip.set_all(*COLOR_OFF, show=True)
 
 if __name__ == "__main__":
     main()

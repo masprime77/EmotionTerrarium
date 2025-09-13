@@ -9,7 +9,7 @@ def main():
 
     try:
         print("[Test M1] Connecting to Wi-Fi...")
-        wifi.connect(timeout_s=10)
+        wifi.connect(timeout_s=30)
         print("[Test M1] Connected. IP:", wifi.ifconfig()[0])
 
         print("[Test M1] Fetching test JSON...")

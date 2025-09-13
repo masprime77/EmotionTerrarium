@@ -3,7 +3,9 @@ DEBUG = True
 M0_TEST = False
 M1_TEST = False
 M2_TEST = False
-M3_TEST = True
+M3_TEST = False
+M4_S1_TEST = False
+M4_S2_TEST = True
 
 # === Hardware configuration ===
 PIN_SENSOR = None # Non yet implemented.
@@ -17,8 +19,14 @@ BRIGHTNESS_LED_RING = 1.0
 BRIGHTNESS_OVERHEAD_LED = 1.0
 
 # === PASSWORDS ===
-SSID = "Videowall"
-PASSWORD = "teamdarmstadt"
+# SSID = "Videowall"
+# PASSWORD = "teamdarmstadt"
+
+SSID = "iPhone 13 Pro Max de Mate"
+PASSWORD = "Mateoooo11..."
+
+# SSID = "UTOPIA"
+# PASSWORD = "Mateoooo11.."
 
 # === COLORS (R,G,B) ===
 COLOR_ON = (255, 255, 255)
@@ -31,10 +39,20 @@ COLOR_CLEAR = (255, 120, 0)
 # COLOR_CLOUDY = (100, 175, 255)
 COLOR_CLOUDY = (255, 120, 0)
 COLOR_RAIN_0 = (0, 0, 10)
-COLOR_RAIN_1 = (0, 255, 255)   # raindrop
-COLOR_SNOW_0 = (100, 100, 100)   # cold white
-COLOR_SNOW_1 = (255, 255, 255)   # twinkle
-COLOR_STORM_0 = (0, 0, 50)   # dark background
-COLOR_STORM_1 = (200, 255, 50)   # lightning
-COLOR_UNKNOWN = (30, 15, 0)   # dim amber
+COLOR_RAIN_1 = (0, 255, 255)
+COLOR_SNOW_0 = (100, 100, 100)
+COLOR_SNOW_1 = (255, 255, 255)
+COLOR_STORM_0 = (0, 0, 50)
+COLOR_STORM_1 = (200, 255, 50)
+COLOR_UNKNOWN = (30, 15, 0)
 
+COLOR_EMOTION_DEFAULT = (10, 10, 10)
+COLOR_HAPPY = (255, 255, 0)
+COLOR_SAD = (0, 0, 255)
+COLOR_ANGRY = (255, 0, 0)
+COLOR_DISGUST = (0, 255, 0)
+COLOR_FEAR = (128, 0, 128)
+COLOR_ANXIETY = (255, 165, 0)
+COLOR_ENVY = (0, 255, 255)
+COLOR_EMBARRASSMENT = (255, 192, 203)
+COLOR_BORED = (128, 128, 128)

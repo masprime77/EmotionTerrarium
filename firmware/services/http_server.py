@@ -1,4 +1,3 @@
-# services/http_server.py  (MicroPython)
 import usocket as socket
 
 def _send_headers(conn, status="200 OK", ctype="application/json", cors=True):

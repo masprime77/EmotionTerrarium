@@ -1,5 +1,5 @@
 import time
-from config import DEBUG, M0_TEST, M1_TEST, M2_TEST, M3_TEST
+from config import DEBUG, M0_TEST, M1_TEST, M2_TEST, M3_TEST, M4_S1_TEST, M4_S2_TEST
 from config import PIN_LED_RING, PIXEL_COUNT_RING, PIN_OVERHEAD_LED, PIXEL_COUNT_OVERHEAD
 from config import COLOR_RED, COLOR_GREEN, COLOR_BLUE
 from config import COLOR_ON, COLOR_OFF
@@ -8,6 +8,8 @@ from tests import m0_bootstrap
 from tests import m1_wifi_http
 from tests import m2_weather_service
 from tests import m3_ambient_controller
+from tests import m4_step1_ping
+from tests import m4_step2_emotion
 
 from drivers.led_builtin import LedBuiltin
 from drivers.led_neopixel import LedNeopixel
@@ -30,6 +32,14 @@ def main():
         if M3_TEST:
             print("=== Running m3_ambient_controller ===")
             m3_ambient_controller.main()
+
+        if M4_S1_TEST:
+            print("=== Running m4_step1_ping ===")
+            m4_step1_ping.main()
+
+        if M4_S2_TEST:
+            print("=== Running m4_step2_emotion ===")
+            m4_step2_emotion.main()
 
         return
 

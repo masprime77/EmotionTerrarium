@@ -1,0 +1,44 @@
+<!doctype html><meta charset="utf-8">
+<h3>Send emotions</h3>
+
+<label>
+  Optional text:
+  <input id="txt" placeholder="optional text">
+</label>
+
+<div style="margin:8px 0;">
+  <button onclick="send(['happy'])">happy</button>
+  <button onclick="send(['sad'])">sad</button>
+  <button onclick="send(['angry'])">angry</button>
+  <button onclick="send(['happy','sad'])">happy+sad</button>
+  <button onclick="getState()">Get state</button>
+</div>
+
+<pre id="out"></pre>
+
+<script>
+const PICO = "http://172.20.10.6"; // e.g. "http://172.20.10.6"
+
+async function send(labels){
+  const text = document.getElementById('txt').value || "";
+  try {
+    const res = await fetch(`${PICO}/emotion`, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({ labels, text })
+    });
+    document.getElementById('out').textContent = await res.text();
+  } catch (e) {
+    document.getElementById('out').textContent = "Error: " + e;
+  }
+}
+
+async function getState(){
+  try {
+    const res = await fetch(`${PICO}/emotion`, { method: "GET" });
+    document.getElementById('out').textContent = await res.text();
+  } catch (e) {
+    document.getElementById('out').textContent = "Error: " + e;
+  }
+}
+</script>

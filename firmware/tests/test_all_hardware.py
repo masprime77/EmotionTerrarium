@@ -8,8 +8,8 @@ from drivers.fan_pwm import FanPWM
 
 def main():
     led_builtin = LedBuiltin()
-    led_ring = LedNeopixel(config.PIN_LED_RING, config.BRIGHTNESS_LED_RING, auto_show=True)
-    led_overhead = LedNeopixel(config.PIN_OVERHEAD_LED, config.BRIGHTNESS_OVERHEAD_LED, auto_show=True)
+    led_ring = LedNeopixel(config.PIN_LED_RING, config.PIXEL_COUNT_RING, config.BRIGHTNESS_LED_RING, auto_show=True)
+    led_overhead = LedNeopixel(config.PIN_OVERHEAD_LED, config.PIXEL_COUNT_OVERHEAD, config.BRIGHTNESS_OVERHEAD_LED, auto_show=True)
     led_bar = LedBar10(config.PIN_LED_BAR10)
     th_sensor = DHT22Sensor(config.PIN_DHT22_SENSOR, config.REFRESH_RATE_DHT22_SENSOR_MS)
     fan = FanPWM(config.PIN_FAN_PWM)

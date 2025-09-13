@@ -95,13 +95,12 @@ def handle_request(method, path, raw_req):
     return "404 Not Found", "application/json", json.dumps({"ok": False, "error": "route"})
 
 def main():
-    # Wi-Fi
     wlan = WiFiService(config.SSID, config.PASSWORD)
     wlan.connect()
     ip = wlan.ifconfig()[0]
     print("[M4/Step2] Open GET :  http://%s/emotion" % ip)
     print("[M4/Step2] POST labels: curl -X POST http://%s/emotion -H 'Content-Type: application/json' -d '{\"labels\":[\"happy\",\"calm\"],\"text\":\"optional\"}'" % ip)
-    serve(handle_request)  # blocking
+    serve(handle_request)
 
 if __name__ == "__main__":
     main()

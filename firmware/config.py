@@ -1,22 +1,15 @@
-# === DEV OPTIONS ===
-DEBUG = False
-M0_TEST = False
-M1_TEST = False
-M2_TEST = False
-M3_TEST = False
-M4_S1_TEST = False
-M4_S2_TEST = True
-
 # === Hardware configuration ===
-PIN_SENSOR = None # Non yet implemented.
 PIN_LED_RING = 17
 PIN_OVERHEAD_LED = 16
+PIN_DHT22_SENSOR = 1
+PIN_LED_BAR10 = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+PIN_FAN_PWM = 2
 
 PIXEL_COUNT_RING = 7
 PIXEL_COUNT_OVERHEAD = 32
 
-BRIGHTNESS_LED_RING = 1.0
-BRIGHTNESS_OVERHEAD_LED = 1.0
+BRIGHTNESS_LED_RING = 0.5
+BRIGHTNESS_OVERHEAD_LED = 0.5
 
 # === PASSWORDS ===
 # SSID = "Videowall"

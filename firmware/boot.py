@@ -41,3 +41,6 @@ def main():
             m4_step2_emotion.main()
 
         return
+    
+if __name__ == "__main__":
+    main()

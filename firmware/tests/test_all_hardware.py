@@ -11,7 +11,7 @@ def main():
     led_ring = LedNeopixel(config.PIN_LED_RING, config.BRIGHTNESS_LED_RING, auto_show=True)
     led_overhead = LedNeopixel(config.PIN_OVERHEAD_LED, config.BRIGHTNESS_OVERHEAD_LED, auto_show=True)
     led_bar = LedBar10(config.PIN_LED_BAR10)
-    th_sensor = DHT22Sensor(config.PIN_DHT22_SENSOR, 500)
+    th_sensor = DHT22Sensor(config.PIN_DHT22_SENSOR, config.REFRESH_RATE_DHT22_SENSOR_MS)
     fan = FanPWM(config.PIN_FAN_PWM)
 
     led_builtin.blink(5, 0.2)

@@ -1,5 +1,5 @@
 # === DEV OPTIONS ===
-DEBUG = True
+DEBUG = False
 M0_TEST = False
 M1_TEST = False
 M2_TEST = False
